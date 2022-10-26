@@ -1,7 +1,35 @@
-let edad = prompt("Sos mayor de 18 años?")
-if(edad == "no"){
-    alert("Te recomendamos comprar en esta pagina acompañado de un adulto")
+let comprar = true;
+let precio = 0;
+
+
+
+
+while(comprar){
+    let prod = prompt("Que producto estas buscando? A)Producto 1  B)Producto 2 C)Producto 3")
+        if(prod === "A"){
+            precio = 200;
+            alert("Compraste un producto por $200");
+            
+        }
+        else if(prod === "B"){
+            precio = 400;
+            alert("Compraste un producto por $400");
+            
+        }
+        else if(prod === "C"){
+            precio = 600;
+            alert("Compraste un producto por $200");
+            
+        }
+        else{
+            alert("No ingresaste un producto valido, ingresa A, B o C")
+        }
+
+        let seguir = prompt("Desea seguir comprando?");
+        if(seguir === "Si"){comprar = true}
+        else if(seguir === "No"){comprar = false}
 }
+
 
 const clickButton = document.querySelectorAll(".button");
 const tbody = document.querySelector(".tbody");
@@ -31,6 +59,18 @@ function addToCarritoItem(e) {
 }
 
 function addItemCarrito(newItem){
+
+    const inputElemento = tbody.getElementsByClassName('input__elemento')
+
+    for(let i=0; i<carrito.length; i++){
+        if(carrito[i].titulo.trim() == newItem.titulo.trim()){
+            carrito[i].cantidad ++;
+            const inputValue = inputElemento[i];
+            inputValue.value ++;
+            console.log(carrito)
+            return null;
+    }}
+
     carrito.push(newItem);
     renderCarrito();
 }
@@ -53,7 +93,7 @@ function renderCarrito(){
           <p>${item.precio}</p>
         </td>
         <td class="table__cantidad">
-          <input type="number" min="1" value=${item.cantidad}>
+          <input type="number" min="1" value=${item.cantidad} class='input__elemento'>
           <button class="delete btn btn-danger">X</button>
         </td>
         `
