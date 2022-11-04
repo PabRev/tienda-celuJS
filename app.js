@@ -1,9 +1,7 @@
+
+/* controlador del prompt. Ya se puede manejar desde el Dom
 let comprar = true;
 let precio = 0;
-
-
-
-
 while(comprar){
     let prod = prompt("Que producto estas buscando? A)Producto 1  B)Producto 2 C)Producto 3")
         if(prod === "A"){
@@ -28,7 +26,7 @@ while(comprar){
         let seguir = prompt("Desea seguir comprando?");
         if(seguir === "Si"){comprar = true}
         else if(seguir === "No"){comprar = false}
-}
+}*/
 
 
 const clickButton = document.querySelectorAll(".button");
