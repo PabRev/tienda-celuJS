@@ -12,3 +12,11 @@ header{z-index: 100;}
     font-size: 1rem;
     font-weight: 700;
 }
+
+.alert{
+    z-index: 100;
+}
+
+.hide{
+    display:none;
+}

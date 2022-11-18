@@ -1,44 +1,13 @@
 
-/* controlador del prompt. Ya se puede manejar desde el Dom
-let comprar = true;
-let precio = 0;
-while(comprar){
-    let prod = prompt("Que producto estas buscando? A)Producto 1  B)Producto 2 C)Producto 3")
-        if(prod === "A"){
-            precio = 200;
-            alert("Compraste un producto por $200");
-            
-        }
-        else if(prod === "B"){
-            precio = 400;
-            alert("Compraste un producto por $400");
-            
-        }
-        else if(prod === "C"){
-            precio = 600;
-            alert("Compraste un producto por $200");
-            
-        }
-        else{
-            alert("No ingresaste un producto valido, ingresa A, B o C")
-        }
-
-        let seguir = prompt("Desea seguir comprando?");
-        if(seguir === "Si"){comprar = true}
-        else if(seguir === "No"){comprar = false}
-}*/
-
-
 const clickButton = document.querySelectorAll(".button");
 const tbody = document.querySelector(".tbody");
 let carrito = [];
+let valido = false;
 
 
-clickButton.forEach(btn => {
-    btn.addEventListener("click", addToCarritoItem)
-})
 
-function addToCarritoItem(e) {
+//datos de la Card
+const addToCarritoItem = (e) => {
     const button = e.target;
     const item = button.closest('.card');
     const itemTitle = item.querySelector('.card-title').textContent;
@@ -53,29 +22,61 @@ function addToCarritoItem(e) {
     }
 
     addItemCarrito(newItem);
-    prodAgregado(itemTitle, itemPrice)
+    
 }
 
-function addItemCarrito(newItem){
+//registro los botones de agregar
+clickButton.forEach(btn => {
+    btn.addEventListener("click", addToCarritoItem)
+})
+
+
+//agrego al carrito
+const addItemCarrito = (newItem) =>{
+
+
+    const alert = document.querySelector('.alert');
+    setTimeout(function(){
+        alert.classList.add('hide')
+        }, 2000)
+        alert.classList.remove('hide')
+
+
 
     const inputElemento = tbody.getElementsByClassName('input__elemento')
-
+   
+    //reviso si ya tengo una unidad agregada y la sumo
     for(let i=0; i<carrito.length; i++){
         if(carrito[i].titulo.trim() == newItem.titulo.trim()){
             carrito[i].cantidad ++;
             const inputValue = inputElemento[i];
             inputValue.value ++;
-            console.log(carrito)
+            carritoTotal()
             return null;
     }}
-
+    
+    //agrego al Array
     carrito.push(newItem);
     renderCarrito();
 }
-function prodAgregado(itemTitle,itemPrice){
-    alert("Agregaste un " + itemTitle + "por un valor de " + itemPrice)
+
+//sumo el total del carrito
+const carritoTotal = () => {
+    let total = 0;
+    const itemCartTotal = document.querySelector(".itemCartTotal");
+    carrito.forEach((item) => {
+        const precio = +(item.precio.replace('$', ''))
+        total = total + precio*item.cantidad
+    })
+    
+
+        itemCartTotal.innerHTML =  `Total: $ ${total}`;
+        addLocalStorage()
 }
-function renderCarrito(){
+
+
+//muestro el carrito
+const renderCarrito = () => {
     tbody.innerHTML = " ";
     carrito.map(item =>{
         const tr = document.createElement("tr");
@@ -98,5 +99,54 @@ function renderCarrito(){
 
         tr.innerHTML = Content;
         tbody.append(tr)
+
+        tr.querySelector(".delete").addEventListener("click", removeItemCarrito);
+        tr.querySelector('.input__elemento').addEventListener('change', sumaCantidad)
     })
+    carritoTotal()
+}
+
+const removeItemCarrito = (e) => {
+    const buttonDelete = e.target
+    const tr = buttonDelete.closest(".itemCarrito");
+    const title = tr.querySelector(".title").textContent;
+
+    for(let i=0; i<carrito.length; i++) {
+
+        //optimice la validacion con la sintaxis abreviada
+        carrito[i].titulo.trim() === title.trim() ? carrito.splice(i, 1) : null
+        
+    }
+
+    tr.remove()
+    carritoTotal()
+}
+
+const sumaCantidad = (e) => {
+    const sumaInput = e.target;
+    const tr = sumaInput.closest('.itemCarrito');
+    const title = tr.querySelector('.title').textContent;
+    carrito.forEach(item => {
+       if(item.titulo.trim() === title){
+
+            //optimice validacion con sintaxis abreviada
+           sumaInput.value < 1 ? (sumaInput = 1) : sumaInput.value;
+           
+           item.cantidad = sumaInput.value;
+           carritoTotal()
+       }
+    })
+}
+
+
+function addLocalStorage(){
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+}
+
+window.onload = function(){
+    const storage = JSON.parse(localStorage.getItem('carrito'));
+        if (storage){
+            carrito = storage;
+            renderCarrito();
+        }
 }
