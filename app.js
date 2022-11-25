@@ -1,24 +1,96 @@
+const productos = [
+    {
+        id: 01,
+        titulo: "Samsung S4",
+        precio: 55000,
+        imagen: "./img/celu1.jpg",
+        cantidad: 4
+    },
+    {
+        id: 02,
+        titulo: "Samsung S5",
+        precio: 62000,
+        imagen: "./img/celu1.jpg",
+        cantidad: 3
+    },{
+        id: 03,
+        titulo: "Samsung S6",
+        precio: 64000,
+        imagen: "./img/celu1.jpg",
+        cantidad: 6
+    },
+    {
+        id: 04,
+        titulo: "Samsung S6 EDGE",
+        precio: 70000,
+        imagen: "./img/celu1.jpg",
+        cantidad: 7
+    },
+    {
+        id: 05,
+        titulo: "Samsung S7",
+        precio: 71000,
+        imagen: "./img/celu1.jpg",
+        cantidad: 3
+    },
+    {
+        id: 06,
+        titulo: "Samsung S8 EDGE",
+        precio: 69000,
+        imagen: "./img/celu1.jpg",
+        cantidad: 3
+    },
+    {
+        id: 07,
+        titulo: "Samsung S9 EDGE",
+        precio: 87000,
+        imagen: "./img/celu1.jpg",
+        cantidad: 9
+    }
+]
+
 
 const clickButton = document.querySelectorAll(".button");
 const tbody = document.querySelector(".tbody");
 let carrito = [];
 let valido = false;
 
+productos.forEach((producto)=>{
+    const containerProductos = document.getElementById('containerProductos');
+    const divCard = document.createElement('div');
+    const card = `<div class="card shadow mb-1 rounded" style="width: 18rem;">
+    <img src="${producto.imagen}" class="card-img-top" alt="celular">
+    <div class="card-body">
+      <h5 class="card-title">${producto.titulo}</h5>
+      <h5 class="card-title text-muted">Precio: <span class="precio">${producto.precio}</span></h5>
+      <p class="card-text text-muted">Some quick example text to build on the card title and make up the bulk of
+        the card's content.</p>
+      <button href="#" class="btn btn-primary button" id="buttonAdd-${producto.id}">Añadir al carrito</button>
+    </div>
+  </div>`
+  divCard.innerHTML = card;
+  containerProductos.appendChild(divCard);
+  const buttonAdd = document.getElementById(`buttonAdd-${producto.id}`)
+  buttonAdd.addEventListener('click', (e) => {
+        addToCarritoItem(producto)
+  })
+})
 
 
 //datos de la Card
-const addToCarritoItem = (e) => {
-    const button = e.target;
-    const item = button.closest('.card');
-    const itemTitle = item.querySelector('.card-title').textContent;
-    const itemPrice = item.querySelector('.precio').textContent;
-    const itemImg = item.querySelector('.card-img-top').src
+const addToCarritoItem = (producto) => {
+
+    const itemTitle = producto.titulo;
+    const itemPrice = producto.precio;
+    const itemImg = producto.imagen;
+    const itemId = producto.id;
 
     const newItem = {
         titulo : itemTitle,
         precio : itemPrice,
         imagen : itemImg,
-        cantidad : 1
+        cantidad : 1,
+        id: itemId
     }
 
     addItemCarrito(newItem);
@@ -30,18 +102,25 @@ clickButton.forEach(btn => {
     btn.addEventListener("click", addToCarritoItem)
 })
 
+//creo el espacio para la alerta
+const alertaAgregado =  document.getElementById("alertaAgregado");
+const divCard = document.createElement('div');
 
 //agrego al carrito
 const addItemCarrito = (newItem) =>{
 
+    //creo la alerta que va en el espacio creado anteriormente
+    const card = `<div class="alert alert-success container position-sticky mx-auto mt-3" role="alert">
+    Cuando agregue el producto que aca aparezca la cantidad
+     </div>`
+     divCard.innerHTML = card;
+    alertaAgregado.appendChild(divCard);
 
-    const alert = document.querySelector('.alert');
-    setTimeout(function(){
-        alert.classList.add('hide')
-        }, 2000)
-        alert.classList.remove('hide')
-
-
+    setTimeout(() =>{
+        alertaAgregado.classList.add('hide')
+        
+    },2000)
+        alertaAgregado.classList.remove('hide')
 
     const inputElemento = tbody.getElementsByClassName('input__elemento')
    
@@ -49,6 +128,7 @@ const addItemCarrito = (newItem) =>{
     for(let i=0; i<carrito.length; i++){
         if(carrito[i].titulo.trim() == newItem.titulo.trim()){
             carrito[i].cantidad ++;
+            const canti = carrito[i].cantidad;
             const inputValue = inputElemento[i];
             inputValue.value ++;
             carritoTotal()
@@ -65,7 +145,7 @@ const carritoTotal = () => {
     let total = 0;
     const itemCartTotal = document.querySelector(".itemCartTotal");
     carrito.forEach((item) => {
-        const precio = +(item.precio.replace('$', ''))
+        const precio = item.precio;
         total = total + precio*item.cantidad
     })
     
@@ -122,6 +202,7 @@ const removeItemCarrito = (e) => {
     carritoTotal()
 }
 
+//actualizo el precio total
 const sumaCantidad = (e) => {
     const sumaInput = e.target;
     const tr = sumaInput.closest('.itemCarrito');
@@ -138,15 +219,39 @@ const sumaCantidad = (e) => {
     })
 }
 
-
+//convierto el carrito en string
 function addLocalStorage(){
     localStorage.setItem('carrito', JSON.stringify(carrito));
 }
 
 window.onload = function(){
+    //vuelvo a parsear el carrito
     const storage = JSON.parse(localStorage.getItem('carrito'));
         if (storage){
             carrito = storage;
             renderCarrito();
         }
 }
+
+
+//evento del boton comprar
+const btnComprar = document.getElementById('btnComprar');
+btnComprar.addEventListener('click', ()=>{
+    Swal.fire({
+        title: 'Desea efectuar la compra?',
+        text: "No se podra retroceder luego",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, estoy seguro!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire(
+            'Felicitaciones',
+            'Su compra se ha efectuado con exito!',
+            'success'
+          )
+        }
+      })
+});
