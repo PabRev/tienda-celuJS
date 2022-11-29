@@ -1,80 +1,36 @@
-const productos = [
-    {
-        id: 01,
-        titulo: "Samsung S4",
-        precio: 55000,
-        imagen: "./img/celu1.jpg",
-        cantidad: 4
-    },
-    {
-        id: 02,
-        titulo: "Samsung S5",
-        precio: 62000,
-        imagen: "./img/celu1.jpg",
-        cantidad: 3
-    },{
-        id: 03,
-        titulo: "Samsung S6",
-        precio: 64000,
-        imagen: "./img/celu1.jpg",
-        cantidad: 6
-    },
-    {
-        id: 04,
-        titulo: "Samsung S6 EDGE",
-        precio: 70000,
-        imagen: "./img/celu1.jpg",
-        cantidad: 7
-    },
-    {
-        id: 05,
-        titulo: "Samsung S7",
-        precio: 71000,
-        imagen: "./img/celu1.jpg",
-        cantidad: 3
-    },
-    {
-        id: 06,
-        titulo: "Samsung S8 EDGE",
-        precio: 69000,
-        imagen: "./img/celu1.jpg",
-        cantidad: 3
-    },
-    {
-        id: 07,
-        titulo: "Samsung S9 EDGE",
-        precio: 87000,
-        imagen: "./img/celu1.jpg",
-        cantidad: 9
-    }
-]
-
+fetch("productosJSON.json")
+    .then((res)=>res.json())
+    .then((data) => {
+        data.forEach((producto)=>{
+            const containerProductos = document.getElementById('containerProductos');
+            const divCard = document.createElement('div');
+            const card = `<div class="card shadow mb-1 rounded" style="width: 18rem;">
+            <img src="${producto.imagen}" class="card-img-top" alt="celular">
+            <div class="card-body">
+              <h5 class="card-title">${producto.titulo}</h5>
+              <h5 class="card-title text-muted">Precio: <span class="precio">${producto.precio}</span></h5>
+              <p class="card-text text-muted">Some quick example text to build on the card title and make up the bulk of
+                the card's content.</p>
+              <button href="#" class="btn btn-primary button" id="buttonAdd-${producto.id}">Añadir al carrito</button>
+            </div>
+          </div>`
+          divCard.innerHTML = card;
+          containerProductos.appendChild(divCard);
+          const buttonAdd = document.getElementById(`buttonAdd-${producto.id}`)
+          buttonAdd.addEventListener('click', (e) => {
+                addToCarritoItem(producto)
+          })
+        })
+    })
 
 const clickButton = document.querySelectorAll(".button");
 const tbody = document.querySelector(".tbody");
 let carrito = [];
 let valido = false;
 
-productos.forEach((producto)=>{
-    const containerProductos = document.getElementById('containerProductos');
-    const divCard = document.createElement('div');
-    const card = `<div class="card shadow mb-1 rounded" style="width: 18rem;">
-    <img src="${producto.imagen}" class="card-img-top" alt="celular">
-    <div class="card-body">
-      <h5 class="card-title">${producto.titulo}</h5>
-      <h5 class="card-title text-muted">Precio: <span class="precio">${producto.precio}</span></h5>
-      <p class="card-text text-muted">Some quick example text to build on the card title and make up the bulk of
-        the card's content.</p>
-      <button href="#" class="btn btn-primary button" id="buttonAdd-${producto.id}">Añadir al carrito</button>
-    </div>
-  </div>`
-  divCard.innerHTML = card;
-  containerProductos.appendChild(divCard);
-  const buttonAdd = document.getElementById(`buttonAdd-${producto.id}`)
-  buttonAdd.addEventListener('click', (e) => {
-        addToCarritoItem(producto)
-  })
-})
+
+
+
 
 
 //datos de la Card

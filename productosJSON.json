@@ -1,0 +1,50 @@
+[
+    {
+        "id": 1,
+        "titulo": "Samsung S4",
+        "precio": 55000,
+        "imagen": "./img/celu1.jpg",
+        "cantidad": 4
+    },
+    {
+        "id": 2,
+        "titulo": "Samsung S5",
+        "precio": 62000,
+        "imagen": "./img/celu1.jpg",
+        "cantidad": 3
+    },{
+        "id": 3,
+        "titulo": "Samsung S6",
+        "precio": 64000,
+        "imagen": "./img/celu1.jpg",
+        "cantidad": 10
+    },
+    {
+        "id": 4,
+        "titulo": "Samsung S6 EDGE",
+        "precio": 70000,
+        "imagen": "./img/celu1.jpg",
+        "cantidad": 8
+    },
+    {
+        "id": 5,
+        "titulo": "Samsung S7",
+        "precio": 71000,
+        "imagen": "./img/celu1.jpg",
+        "cantidad": 2
+    },
+    {
+        "id": 6,
+        "titulo": "Samsung S8 EDGE",
+        "precio": 69000,
+        "imagen": "./img/celu1.jpg",
+        "cantidad": 14
+    },
+    {
+        "id": 7,
+        "titulo": "Samsung S9 EDGE",
+        "precio": 87000,
+        "imagen": "./img/celu1.jpg",
+        "cantidad": 9
+    }
+]
