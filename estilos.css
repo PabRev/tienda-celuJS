@@ -1,0 +1,22 @@
+header{z-index: 100;}
+.table__productos{display: flex;}
+.table__productos img{
+    width: 9rem;
+    object-fit: contain;
+    border-radius: 6px;
+}
+.table__cantidad input{
+    width: 40px;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.alert{
+    z-index: 100;
+}
+
+.hide{
+    display:none;
+}
